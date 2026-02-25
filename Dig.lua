@@ -1,19 +1,13 @@
 -- Dig Training
-repeat task.wait(15) until game:IsLoaded()
-
 local player = game.Players.LocalPlayer
-
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
-
 humanoid.Health = 0
 local newCharacter = player.CharacterAdded:Wait()
-local waitTime = 5
+local waitTime = 1
 task.wait(waitTime) 
-
 local playerGui = player:WaitForChild("PlayerGui")
 local autoFightButton
-
 local knit = game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit")
 local autoServiceRE = knit:WaitForChild("Services"):WaitForChild("AutoService"):WaitForChild("RE")
 
@@ -80,3 +74,34 @@ task.spawn(function()
         task.wait(60)
     end
 end)
+
+if getgenv().AntiAFK then
+    task.spawn(function()
+        local player = game.Players.LocalPlayer
+        local success = false
+        pcall(function()
+            local getconn = getconnections or get_signal_cons
+            if getconn then
+                for _, connection in pairs(getconn(player.Idled)) do
+                    if connection["Disable"] then
+                        connection:Disable()
+                    elseif connection["Disconnect"] then
+                        connection:Disconnect()
+                    end
+                end
+                success = true
+            end
+        end)
+
+        if not success then
+            local VirtualUser = game:GetService("VirtualUser")            
+            player.Idled:Connect(function()
+                if getgenv().AntiAFK then 
+                    VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                    task.wait(0.1)
+                    VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                end
+            end)
+        end
+    end)
+end
