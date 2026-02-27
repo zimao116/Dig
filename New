@@ -1,0 +1,140 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+getgenv().AutoTrain = false
+getgenv().AutoHatch = false
+getgenv().AutoDig = false
+
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local knit = game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit")
+local autoServiceRE = knit:WaitForChild("Services"):WaitForChild("AutoService"):WaitForChild("RE")
+local RunTrainEvent = knit:WaitForChild("Services"):WaitForChild("TrainService"):WaitForChild("RE"):WaitForChild("RunTrain")
+local AutoHatchEvent = knit:WaitForChild("Services"):WaitForChild("EggHatchService"):WaitForChild("RE"):WaitForChild("Hatch")
+local autoFightButton = nil
+
+local function updateButton()
+    pcall(function()
+        local homeGui = playerGui:FindFirstChild("HomeGui")
+        if homeGui then
+            local rightFrame = homeGui:FindFirstChild("RightFrame")
+            if rightFrame then
+                autoFightButton = rightFrame:FindFirstChild("AutoFightButton")
+            end
+        end
+    end)
+end
+
+local function jimsDigButton()
+    if not autoFightButton then return end 
+    local mouse = {"MouseButton1Click", "Activated", "MouseButton1Down"}
+    for _, click in ipairs(mouse) do
+        local btnEvent = autoFightButton[click]
+        if btnEvent then
+            for _, connection in pairs(getconnections(btnEvent)) do
+                connection:Fire()
+            end
+        end
+    end
+end
+
+local Window = Fluent:CreateWindow({
+    Title = "PixelX",
+    SubTitle = "by Pixel",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local Options = Fluent.Options
+
+Tabs.Main:AddParagraph({
+    Title = "Automation",
+    Content = "Select features to automate."
+})
+
+local ToggleTrain = Tabs.Main:AddToggle("AutoTrain", {Title = "Auto Train", Default = false })
+ToggleTrain:OnChanged(function()
+    getgenv().AutoTrain = Options.AutoTrain.Value
+    if getgenv().AutoTrain then
+        task.spawn(function()
+            while getgenv().AutoTrain do
+                pcall(function() RunTrainEvent:FireServer("Anvil_3_VIP") end)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+local ToggleHatch = Tabs.Main:AddToggle("AutoHatch", {Title = "Auto Hatch (Egg 3)", Default = false })
+ToggleHatch:OnChanged(function()
+    getgenv().AutoHatch = Options.AutoHatch.Value
+    if getgenv().AutoHatch then
+        task.spawn(function()
+            while getgenv().AutoHatch do
+                pcall(function() AutoHatchEvent:FireServer("Egg_3_1", 3) end)
+                task.wait(1)
+            end
+        end)
+    end
+end)
+
+local ToggleDig = Tabs.Main:AddToggle("AutoDig", {Title = "Auto Dig/Fight", Default = false })
+ToggleDig:OnChanged(function()
+    getgenv().AutoDig = Options.AutoDig.Value
+    if getgenv().AutoDig then
+        task.spawn(function()
+            updateButton()
+            pcall(function() autoServiceRE.AutoFightStop:FireServer() end)
+            task.wait(0.2)
+            while getgenv().AutoDig do
+                if not autoFightButton or not autoFightButton.Parent then updateButton() end
+                
+                if autoFightButton and autoFightButton.Parent then
+                    jimsDigButton()
+                    task.wait(2)
+                    if not getgenv().AutoDig then break end
+                    pcall(function() autoServiceRE.AutoFightStop:FireServer() end)
+                    task.wait(0.1)
+                    jimsDigButton()
+                    task.wait(0.1)
+                else
+                    task.wait(1)
+                end
+            end
+            pcall(function() autoServiceRE.AutoFightStop:FireServer() end)
+        end)
+    else
+        pcall(function() autoServiceRE.AutoFightStop:FireServer() end)
+    end
+end)
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+
+InterfaceManager:SetFolder("PixelXHub")
+SaveManager:SetFolder("PixelXHub/specific-game")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title = "PixelX",
+    Content = "Script Loaded with Config Support",
+    Duration = 5
+})
+
+SaveManager:LoadAutoloadConfig()
