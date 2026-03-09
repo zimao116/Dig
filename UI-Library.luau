@@ -9194,24 +9194,21 @@ local creator = __DIST.d()
 	local VERTICAL_PADDING = 6
 	local EDGE_BUFFER = 6
 
-	local SIZE_CONSTRAINT_Y = 260
-	local MENU_WIDTH = 260
+	local SIZE_CONSTRAINT_Y = 239
 
 	--// Functions
 	local function resize()
+		structures.Menu.AutomaticSize = Enum.AutomaticSize.XY
+
 		task.defer(function()
-			local listLayout = structures.Menu:FindFirstChild("UIListLayout")
-			local contentHeight = listLayout and listLayout.AbsoluteContentSize.Y or 0
-			local padding = 10
+			local menuHeight = structures.Menu.AbsoluteSize.Y
 
-			local totalHeight = contentHeight + padding
-
-			structures.Menu.AutomaticSize = Enum.AutomaticSize.None
-
-			if totalHeight >= SIZE_CONSTRAINT_Y then
-				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, SIZE_CONSTRAINT_Y)
+			if menuHeight >= SIZE_CONSTRAINT_Y then
+				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
+				structures.Menu.Size = UDim2.fromOffset(0, SIZE_CONSTRAINT_Y)
 			else
-				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, totalHeight)
+				structures.Menu.Size = UDim2.fromOffset(0, menuHeight)
+				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
 			end
 		end)
 	end
@@ -9238,7 +9235,7 @@ local creator = __DIST.d()
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
 		
-		local desiredY = bodyPos.Y + (bodySize.Y * 3) + VERTICAL_PADDING
+		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
@@ -9254,7 +9251,7 @@ local creator = __DIST.d()
 			Name = "Item",
 			Size = UDim2.fromScale(1, 0),
 			AutoButtonColor = false,
-			AutomaticSize = Enum.AutomaticSize.Y,
+			AutomaticSize = Enum.AutomaticSize.XY,
 			BorderColor3 = Color3.fromRGB(0, 0, 0),
 			BorderSizePixel = 0,
 			Selectable = false,
@@ -9291,6 +9288,34 @@ local creator = __DIST.d()
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			}),
 
+			create("ImageLabel")({
+				Name = "Checkmark",
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundTransparency = 1,
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				BorderSizePixel = 0,
+				Image = "rbxassetid://127464789357538",
+				ImageColor3 = Color3.fromRGB(0, 0, 0),
+				ImageTransparency = 1,
+				Size = UDim2.fromOffset(16, 16),
+				Visible = false,
+
+				__dynamicKeys = {
+					ImageColor3 = self.Theme.Text.Primary[1],
+					ImageTransparency = self.Theme.Text.Primary[2],
+				},
+			}),
+
+			create("Frame")({
+				Name = "CheckmarkRepl",
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundTransparency = 1,
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				BorderSizePixel = 0,
+				Size = UDim2.fromOffset(16, 16),
+				Visible = true,
+			}),
+
 			create("TextLabel")({
 				Name = "Label",
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -9319,6 +9344,7 @@ local creator = __DIST.d()
 			}),
 		}) :: TextButton
 		local label = option:FindFirstChild("Label")
+		local checkmark = option:FindFirstChild("Checkmark")
 
 		structures.Options[index] = option.__instance
 
@@ -9333,12 +9359,16 @@ local creator = __DIST.d()
 				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
 				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
 
+				checkmark.ImageColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
+				checkmark.ImageTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
 			else
 				option.BackgroundTransparency = 1
 
 				label.TextColor3 = self.Theme.Text.Primary[1].Value
 				label.TextTransparency = self.Theme.Text.Primary[2].Value
 
+				checkmark.ImageColor3 = self.Theme.Text.Primary[1].Value
+				checkmark.ImageTransparency = self.Theme.Text.Primary[2].Value
 			end
 		end)
 
@@ -9491,8 +9521,7 @@ local creator = __DIST.d()
 
 			create("ScrollingFrame")({
 				Name = "PopUpMenu",
-				AutomaticSize = Enum.AutomaticSize.None,
-				Size = UDim2.fromOffset(MENU_WIDTH, 0),
+				AutomaticSize = Enum.AutomaticSize.X,
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BorderSizePixel = 0,
 				AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -9528,7 +9557,7 @@ local creator = __DIST.d()
 				create("UIListLayout")({
 					Name = "UIListLayout",
 					SortOrder = Enum.SortOrder.LayoutOrder,
-					Padding = UDim.new(0, 2),
+					Padding = UDim.new(0, 1),
 				}),
 			}),
 		}),
@@ -9546,8 +9575,8 @@ local creator = __DIST.d()
 
 			for index, _option in ipairs(value) do
 				option(object, _option, index)
+				resize()
 			end
-			resize()
 		end,
 
 		Expanded = function(value: boolean)
@@ -9597,6 +9626,19 @@ local creator = __DIST.d()
 					structures.CurrentTab.Text = table.concat(labels, ", ")
 				end
 
+				for index, option in ipairs(structures.Options) do
+					if not option or not option:FindFirstChild("Checkmark") then
+						continue
+					end
+
+					if selMap[index] then
+						option:FindFirstChild("Checkmark").Visible = true
+						option:FindFirstChild("CheckmarkRepl").Visible = false
+					else
+						option:FindFirstChild("Checkmark").Visible = false
+						option:FindFirstChild("CheckmarkRepl").Visible = true
+					end
+				end
 			else
 				if not value or not structures.Options[value] then
 					structures.CurrentTab.Text = "None"
@@ -9604,6 +9646,25 @@ local creator = __DIST.d()
 					structures.CurrentTab.Text = structures.Options[value]:FindFirstChild("Label").Text
 				end
 
+				for index, option in ipairs(structures.Options) do
+					local currentIndex = index == value
+
+					if not option or not option:FindFirstChild("Checkmark") then
+						continue
+					end
+
+					if not currentIndex then
+						option:FindFirstChild("Checkmark").Visible = false
+						option:FindFirstChild("CheckmarkRepl").Visible = true -- Scuffed way to do this but 🤷‍♂️
+					else
+						option:FindFirstChild("CheckmarkRepl").Visible = false
+						if not value then
+							option:FindFirstChild("Checkmark").Visible = false
+						else
+							option:FindFirstChild("Checkmark").Visible = true
+						end
+					end
+				end
 			end
 
 			if properties.ValueChanged then
