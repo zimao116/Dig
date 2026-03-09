@@ -6333,11 +6333,9 @@ local effects = __DIST.h()
 
     do
         userInputService.InputBegan:Connect(function(input, gameProcessed)
-            if gameProcessed then return end
-
-            local currentKey = properties.MinimizeKey or Enum.KeyCode.LeftControl
-
-            if input.KeyCode == currentKey then
+            if userInputService:GetFocusedTextBox() then return end
+            local toggleKey = properties.MinimizeKey or Enum.KeyCode.LeftControl
+            if input.KeyCode == toggleKey then
                 properties.Minimized = not properties.Minimized
                 bindings.Minimized(properties.Minimized, true)
             end
