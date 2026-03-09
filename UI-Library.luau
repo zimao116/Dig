@@ -9195,20 +9195,21 @@ local creator = __DIST.d()
 	local EDGE_BUFFER = 6
 
 	local SIZE_CONSTRAINT_Y = 239
+	local MENU_WIDTH = 220
 
 	--// Functions
 	local function resize()
-		structures.Menu.AutomaticSize = Enum.AutomaticSize.XY
+		structures.Menu.AutomaticSize = Enum.AutomaticSize.Y
 
 		task.defer(function()
 			local menuHeight = structures.Menu.AbsoluteSize.Y
 
 			if menuHeight >= SIZE_CONSTRAINT_Y then
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
-				structures.Menu.Size = UDim2.fromOffset(0, SIZE_CONSTRAINT_Y)
+				structures.Menu.AutomaticSize = Enum.AutomaticSize.None
+				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, SIZE_CONSTRAINT_Y)
 			else
-				structures.Menu.Size = UDim2.fromOffset(0, menuHeight)
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
+				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, menuHeight)
+				structures.Menu.AutomaticSize = Enum.AutomaticSize.None
 			end
 		end)
 	end
@@ -9251,7 +9252,7 @@ local creator = __DIST.d()
 			Name = "Item",
 			Size = UDim2.fromScale(1, 0),
 			AutoButtonColor = false,
-			AutomaticSize = Enum.AutomaticSize.XY,
+			AutomaticSize = Enum.AutomaticSize.Y,
 			BorderColor3 = Color3.fromRGB(0, 0, 0),
 			BorderSizePixel = 0,
 			Selectable = false,
@@ -9488,7 +9489,8 @@ local creator = __DIST.d()
 
 			create("ScrollingFrame")({
 				Name = "PopUpMenu",
-				AutomaticSize = Enum.AutomaticSize.X,
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Size = UDim2.fromOffset(MENU_WIDTH, 0),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BorderSizePixel = 0,
 				AutomaticCanvasSize = Enum.AutomaticSize.Y,
