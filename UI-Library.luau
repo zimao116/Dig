@@ -6331,6 +6331,23 @@ local effects = __DIST.h()
 		end)
 	end
 
+    do
+        userInputService.InputBegan:Connect(function(input, gameProcessed)
+            if userInputService:GetFocusedTextBox() then return end
+            local keyToToggle = Enum.KeyCode.LeftControl
+            if type(object.MinimizeKey) == "table" and object.MinimizeKey.Type == "KeybindField" then
+                if object.MinimizeKey.Value then
+                	keyToToggle = object.MinimizeKey.Value
+				end
+			elseif typeof(object.MinimizeKey) == "EnumItem" then
+				keyToToggle = object.MinimizeKey
+            end
+			if input.KeyCode == keyToToggle then
+				object.Minimized = not object.Minimized
+			end
+        end)
+    end
+
 	binder.Apply(properties, object)
 
 	local function recheck() -- Due to roblox resizing issues
@@ -9218,7 +9235,7 @@ local creator = __DIST.d()
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
 		
-		local desiredY = bodyPos.Y + bodySize.Y + VERTICAL_PADDING
+		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
@@ -9451,7 +9468,7 @@ local creator = __DIST.d()
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
-					Image = "rbxassetid://89151647333378",
+					Image = "rbxassetid://86693411280110",
 					Size = UDim2.fromScale(1, 1),
 
 					__dynamicKeys = {
