@@ -9288,6 +9288,17 @@ local creator = __DIST.d()
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			}),
 
+
+			create("Frame")({
+				Name = "CheckmarkRepl",
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundTransparency = 1,
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				BorderSizePixel = 0,
+				Size = UDim2.fromOffset(16, 16),
+				Visible = true,
+			}),
+
 			create("TextLabel")({
 				Name = "Label",
 				AutomaticSize = Enum.AutomaticSize.XY,
