@@ -11190,14 +11190,14 @@ return {
 		_id = "Blue",
 
 		Dark = {
-			SwitchAccent = Color3.fromHex("#0A84FF"),
-			Selection = Color3.fromHex("#007AFF"),
-			SelectionFocused = Color3.fromHex("#0A82FF"),
-			Toggle = { SwitchOn = Color3.fromHex("#0A84FF") },
+			SwitchAccent = Color3.fromHex("#D10056"),
+			Selection = Color3.fromHex("#D10056"),
+			SelectionFocused = Color3.fromHex("#D10056"),
+			Toggle = { SwitchOn = Color3.fromHex("#D10056") },
 			Button = {
 				FillPrimary = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.fromRGB(72, 148, 255)),
-					ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 110, 255)),
+					ColorSequenceKeypoint.new(0, Color3.fromRGB(209, 0, 86)),
+					ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 0, 57)),
 				}),
 			},
 		},
