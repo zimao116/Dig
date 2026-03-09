@@ -9631,13 +9631,13 @@ local creator = __DIST.d()
 						continue
 					end
 
-					if selMap[index] then
-						option:FindFirstChild("Checkmark").Visible = true
-						option:FindFirstChild("CheckmarkRepl").Visible = false
-					else
+					--if selMap[index] then
+						--option:FindFirstChild("Checkmark").Visible = true
+						--option:FindFirstChild("CheckmarkRepl").Visible = false
+					--else
 						option:FindFirstChild("Checkmark").Visible = false
 						option:FindFirstChild("CheckmarkRepl").Visible = true
-					end
+					--end
 				end
 			else
 				if not value or not structures.Options[value] then
@@ -9658,11 +9658,12 @@ local creator = __DIST.d()
 						option:FindFirstChild("CheckmarkRepl").Visible = true -- Scuffed way to do this but 🤷‍♂️
 					else
 						option:FindFirstChild("CheckmarkRepl").Visible = false
-						if not value then
-							option:FindFirstChild("Checkmark").Visible = false
-						else
-							option:FindFirstChild("Checkmark").Visible = true
-						end
+						--if not value then
+							--option:FindFirstChild("Checkmark").Visible = false
+						--else
+							--option:FindFirstChild("Checkmark").Visible = true
+						--end
+						option:FindFirstChild("Checkmark").Visible = false
 					end
 				end
 			end
