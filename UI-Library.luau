@@ -9354,7 +9354,7 @@ local creator = __DIST.d()
 			end
 
 			if option.GuiState == Enum.GuiState.Hover then
-				option.BackgroundTransparency = self.Theme.Controls.SelectionFocused[2].Value
+				option.BackgroundTransparency = 1
 
 				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
 				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
