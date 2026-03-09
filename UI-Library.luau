@@ -9235,7 +9235,7 @@ local creator = __DIST.d()
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
 		
-		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
+		local desiredY = bodyPos.Y + bodySize.Y + (VERTICAL_PADDING * 3)
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
