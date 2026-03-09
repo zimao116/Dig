@@ -9194,22 +9194,24 @@ local creator = __DIST.d()
 	local VERTICAL_PADDING = 6
 	local EDGE_BUFFER = 6
 
-	local SIZE_CONSTRAINT_Y = 239
-	local MENU_WIDTH = 220
+	local SIZE_CONSTRAINT_Y = 260
+	local MENU_WIDTH = 260
 
 	--// Functions
 	local function resize()
-		structures.Menu.AutomaticSize = Enum.AutomaticSize.Y
-
 		task.defer(function()
-			local menuHeight = structures.Menu.AbsoluteSize.Y
+			local listLayout = structures.Menu:FindFirstChild("UIListLayout")
+			local contentHeight = listLayout and listLayout.AbsoluteContentSize.Y or 0
+			local padding = 10
 
-			if menuHeight >= SIZE_CONSTRAINT_Y then
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.None
+			local totalHeight = contentHeight + padding
+
+			structures.Menu.AutomaticSize = Enum.AutomaticSize.None
+
+			if totalHeight >= SIZE_CONSTRAINT_Y then
 				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, SIZE_CONSTRAINT_Y)
 			else
-				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, menuHeight)
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.None
+				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, totalHeight)
 			end
 		end)
 	end
@@ -9236,7 +9238,7 @@ local creator = __DIST.d()
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
 		
-		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
+		local desiredY = bodyPos.Y + (bodySize.Y * 3) + VERTICAL_PADDING
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
@@ -9489,7 +9491,7 @@ local creator = __DIST.d()
 
 			create("ScrollingFrame")({
 				Name = "PopUpMenu",
-				AutomaticSize = Enum.AutomaticSize.Y,
+				AutomaticSize = Enum.AutomaticSize.None,
 				Size = UDim2.fromOffset(MENU_WIDTH, 0),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BorderSizePixel = 0,
@@ -9526,7 +9528,7 @@ local creator = __DIST.d()
 				create("UIListLayout")({
 					Name = "UIListLayout",
 					SortOrder = Enum.SortOrder.LayoutOrder,
-					Padding = UDim.new(0, 1),
+					Padding = UDim.new(0, 2),
 				}),
 			}),
 		}),
@@ -9544,8 +9546,8 @@ local creator = __DIST.d()
 
 			for index, _option in ipairs(value) do
 				option(object, _option, index)
-				resize()
 			end
+			resize()
 		end,
 
 		Expanded = function(value: boolean)
