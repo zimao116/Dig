@@ -9841,6 +9841,19 @@ local creator = __DIST.d()
 				return
 			end
 
+			if option.GuiState == Enum.GuiState.Hover then
+				option.BackgroundTransparency = self.Theme.Controls.SelectionFocused[2].Value
+
+				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
+				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
+			else
+				option.BackgroundTransparency = 1
+
+				label.TextColor3 = self.Theme.Text.Primary[1].Value
+				label.TextTransparency = self.Theme.Text.Primary[2].Value
+			end
+		end)
+
 		option.MouseButton1Click:Connect(function()
 			if object then
 				object.Expanded = false
