@@ -6331,23 +6331,6 @@ local effects = __DIST.h()
 		end)
 	end
 
-    do
-        userInputService.InputBegan:Connect(function(input, gameProcessed)
-            if userInputService:GetFocusedTextBox() then return end
-            local keyToToggle = Enum.KeyCode.LeftControl
-            if type(object.MinimizeKey) == "table" and object.MinimizeKey.Type == "KeybindField" then
-                if object.MinimizeKey.Value then
-                	keyToToggle = object.MinimizeKey.Value
-				end
-			elseif typeof(object.MinimizeKey) == "EnumItem" then
-				keyToToggle = object.MinimizeKey
-            end
-			if input.KeyCode == keyToToggle then
-				object.Minimized = not object.Minimized
-			end
-        end)
-    end
-
 	binder.Apply(properties, object)
 
 	local function recheck() -- Due to roblox resizing issues
@@ -9235,7 +9218,7 @@ local creator = __DIST.d()
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
 		
-		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
+		local desiredY = bodyPos.Y + bodySize.Y + VERTICAL_PADDING
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
@@ -9259,6 +9242,19 @@ local creator = __DIST.d()
 			LayoutOrder = index,
 			Parent = structures.Menu,
 
+			__dynamicKeys = {
+				BackgroundColor3 = self.Theme.Controls.SelectionFocused[1],
+				BackgroundTransparency = self.Theme.Controls.SelectionFocused[2],
+			},
+			__contextKeys = {
+				BackgroundTransparency = function()
+					if not option then
+						return
+					end
+					return option.GuiState == Enum.GuiState.Hover and self.Theme.Controls.SelectionFocused[2].Value or 1
+				end,
+			},
+
 			create("UIPadding")({
 				Name = "UIPadding",
 				PaddingBottom = UDim.new(0, 3),
@@ -9275,6 +9271,23 @@ local creator = __DIST.d()
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			}),
 
+			create("ImageLabel")({
+				Name = "Checkmark",
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundTransparency = 1,
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				BorderSizePixel = 0,
+				Image = "rbxassetid://127464789357538",
+				ImageColor3 = Color3.fromRGB(0, 0, 0),
+				ImageTransparency = 1,
+				Size = UDim2.fromOffset(16, 16),
+				Visible = false,
+
+				__dynamicKeys = {
+					ImageColor3 = self.Theme.Text.Primary[1],
+					ImageTransparency = self.Theme.Text.Primary[2],
+				},
+			}),
 
 			create("Frame")({
 				Name = "CheckmarkRepl",
@@ -9324,7 +9337,7 @@ local creator = __DIST.d()
 			end
 
 			if option.GuiState == Enum.GuiState.Hover then
-				option.BackgroundTransparency = 1
+				option.BackgroundTransparency = self.Theme.Controls.SelectionFocused[2].Value
 
 				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
 				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
@@ -9438,7 +9451,7 @@ local creator = __DIST.d()
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
-					Image = "rbxassetid://86693411280110",
+					Image = "rbxassetid://89151647333378",
 					Size = UDim2.fromScale(1, 1),
 
 					__dynamicKeys = {
@@ -9776,6 +9789,19 @@ local creator = __DIST.d()
 			LayoutOrder = index,
 			Parent = structures.Menu,
 
+			__dynamicKeys = {
+				BackgroundColor3 = self.Theme.Controls.SelectionFocused[1],
+				BackgroundTransparency = self.Theme.Controls.SelectionFocused[2],
+			},
+			__contextKeys = {
+				BackgroundTransparency = function()
+					if not option then
+						return
+					end
+					return option.GuiState == Enum.GuiState.Hover and self.Theme.Controls.SelectionFocused[2].Value or 1
+				end,
+			},
+
 			create("UIPadding")({
 				Name = "UIPadding",
 				PaddingBottom = UDim.new(0, 3),
@@ -9827,6 +9853,19 @@ local creator = __DIST.d()
 			if not object.Expanded then
 				return
 			end
+
+			if option.GuiState == Enum.GuiState.Hover then
+				option.BackgroundTransparency = self.Theme.Controls.SelectionFocused[2].Value
+
+				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
+				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
+			else
+				option.BackgroundTransparency = 1
+
+				label.TextColor3 = self.Theme.Text.Primary[1].Value
+				label.TextTransparency = self.Theme.Text.Primary[2].Value
+			end
+		end)
 
 		option.MouseButton1Click:Connect(function()
 			if object then
@@ -11134,9 +11173,9 @@ return {
 		_id = "Blue",
 
 		Dark = {
-			SwitchAccent = Color3.fromHex("#D10056"),
-			Selection = Color3.fromHex("#D10056"),
-			SelectionFocused = Color3.fromHex("#D10056"),
+			SwitchAccent = Color3.fromHex("#0A84FF"),
+			Selection = Color3.fromHex("#007AFF"),
+			SelectionFocused = Color3.fromHex("#0A82FF"),
 			Toggle = { SwitchOn = Color3.fromHex("#0A84FF") },
 			Button = {
 				FillPrimary = ColorSequence.new({
@@ -11198,11 +11237,11 @@ return {
 	Red = {
 		_id = "Red",
 		Dark = {
-			SwitchAccent = Color3.fromHex("#D10056"),
-			Selection = Color3.fromHex("#D10056"),
-			SelectionFocused = Color3.fromHex("#D10056"),
-			Toggle = { SwitchOn = Color3.fromHex("#D10056") },
-			Button = { FillPrimary = makeGradient("#D10056", "#A00042") },
+			SwitchAccent = Color3.fromHex("#FF453A"),
+			Selection = Color3.fromHex("#D4201A"),
+			SelectionFocused = Color3.fromHex("#E83830"),
+			Toggle = { SwitchOn = Color3.fromHex("#FF453A") },
+			Button = { FillPrimary = makeGradient("#E83830", "#BC0E08") },
 		},
 		Light = {
 			SwitchAccent = Color3.fromHex("#FF3B30"),
