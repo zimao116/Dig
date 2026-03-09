@@ -9621,7 +9621,7 @@ local creator = __DIST.d()
 				end
 
 				if #labels == 0 then
-					structures.CurrentTab.Text = "None"
+					structures.CurrentTab.Text = ""
 				else
 					structures.CurrentTab.Text = table.concat(labels, ", ")
 				end
