@@ -9789,19 +9789,6 @@ local creator = __DIST.d()
 			LayoutOrder = index,
 			Parent = structures.Menu,
 
-			__dynamicKeys = {
-				BackgroundColor3 = self.Theme.Controls.SelectionFocused[1],
-				BackgroundTransparency = self.Theme.Controls.SelectionFocused[2],
-			},
-			__contextKeys = {
-				BackgroundTransparency = function()
-					if not option then
-						return
-					end
-					return option.GuiState == Enum.GuiState.Hover and self.Theme.Controls.SelectionFocused[2].Value or 1
-				end,
-			},
-
 			create("UIPadding")({
 				Name = "UIPadding",
 				PaddingBottom = UDim.new(0, 3),
@@ -9853,19 +9840,6 @@ local creator = __DIST.d()
 			if not object.Expanded then
 				return
 			end
-
-			if option.GuiState == Enum.GuiState.Hover then
-				option.BackgroundTransparency = self.Theme.Controls.SelectionFocused[2].Value
-
-				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
-				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
-			else
-				option.BackgroundTransparency = 1
-
-				label.TextColor3 = self.Theme.Text.Primary[1].Value
-				label.TextTransparency = self.Theme.Text.Primary[2].Value
-			end
-		end)
 
 		option.MouseButton1Click:Connect(function()
 			if object then
