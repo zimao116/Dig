@@ -6334,11 +6334,17 @@ local effects = __DIST.h()
     do
         userInputService.InputBegan:Connect(function(input, gameProcessed)
             if userInputService:GetFocusedTextBox() then return end
-            local toggleKey = properties.MinimizeKey or Enum.KeyCode.LeftControl
-            if input.KeyCode == toggleKey then
-                properties.Minimized = not properties.Minimized
-                bindings.Minimized(properties.Minimized, true)
+            local keyToToggle = Enum.KeyCode.LeftControl
+            if type(object.MinimizeKey) == "table" and object.MinimizeKey.Type == "KeybindField" then
+                if object.MinimizeKey.Value then
+                	keyToToggle = object.MinimizeKey.Value
+				end
+			elseif typeof(object.MinimizeKey) == "EnumItem" then
+				keyToToggle = object.MinimizeKey
             end
+			if input.KeyCode == keyToToggle then
+				object.Minimized = not object.Minimized
+			end
         end)
     end
 
