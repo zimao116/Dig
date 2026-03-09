@@ -6331,6 +6331,19 @@ local effects = __DIST.h()
 		end)
 	end
 
+    do
+        userInputService.InputBegan:Connect(function(input, gameProcessed)
+            if gameProcessed then return end
+
+            local currentKey = properties.MinimizeKey or Enum.KeyCode.LeftControl
+
+            if input.KeyCode == currentKey then
+                properties.Minimized = not properties.Minimized
+                bindings.Minimized(properties.Minimized, true)
+            end
+        end)
+    end
+
 	binder.Apply(properties, object)
 
 	local function recheck() -- Due to roblox resizing issues
