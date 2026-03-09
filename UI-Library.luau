@@ -11254,7 +11254,7 @@ return {
 	Red = {
 		_id = "Red",
 		Dark = {
-			SwitchAccent = Color3.fromHex("#FF453A"),
+			SwitchAccent = Color3.fromHex("#D10056"),
 			Selection = Color3.fromHex("#D10056"),
 			SelectionFocused = Color3.fromHex("#E83830"),
 			Toggle = { SwitchOn = Color3.fromHex("#FF453A") },
