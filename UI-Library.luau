@@ -9259,19 +9259,6 @@ local creator = __DIST.d()
 			LayoutOrder = index,
 			Parent = structures.Menu,
 
-			__dynamicKeys = {
-				BackgroundColor3 = self.Theme.Controls.SelectionFocused[1],
-				BackgroundTransparency = self.Theme.Controls.SelectionFocused[2],
-			},
-			__contextKeys = {
-				BackgroundTransparency = function()
-					if not option then
-						return
-					end
-					return option.GuiState == Enum.GuiState.Hover and self.Theme.Controls.SelectionFocused[2].Value or 1
-				end,
-			},
-
 			create("UIPadding")({
 				Name = "UIPadding",
 				PaddingBottom = UDim.new(0, 3),
