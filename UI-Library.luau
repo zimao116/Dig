@@ -11257,8 +11257,8 @@ return {
 			SwitchAccent = Color3.fromHex("#D10056"),
 			Selection = Color3.fromHex("#D10056"),
 			SelectionFocused = Color3.fromHex("#D10056"),
-			Toggle = { SwitchOn = Color3.fromHex("#FF453A") },
-			Button = { FillPrimary = makeGradient("#E83830", "#BC0E08") },
+			Toggle = { SwitchOn = Color3.fromHex("#D10056") },
+			Button = { FillPrimary = makeGradient("#D10056", "#A00042") },
 		},
 		Light = {
 			SwitchAccent = Color3.fromHex("#FF3B30"),
