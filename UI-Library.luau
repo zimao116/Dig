@@ -9288,34 +9288,6 @@ local creator = __DIST.d()
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			}),
 
-			create("ImageLabel")({
-				Name = "Checkmark",
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 1,
-				BorderColor3 = Color3.fromRGB(0, 0, 0),
-				BorderSizePixel = 0,
-				Image = "rbxassetid://127464789357538",
-				ImageColor3 = Color3.fromRGB(0, 0, 0),
-				ImageTransparency = 1,
-				Size = UDim2.fromOffset(16, 16),
-				Visible = false,
-
-				__dynamicKeys = {
-					ImageColor3 = self.Theme.Text.Primary[1],
-					ImageTransparency = self.Theme.Text.Primary[2],
-				},
-			}),
-
-			create("Frame")({
-				Name = "CheckmarkRepl",
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 1,
-				BorderColor3 = Color3.fromRGB(0, 0, 0),
-				BorderSizePixel = 0,
-				Size = UDim2.fromOffset(16, 16),
-				Visible = true,
-			}),
-
 			create("TextLabel")({
 				Name = "Label",
 				AutomaticSize = Enum.AutomaticSize.XY,
