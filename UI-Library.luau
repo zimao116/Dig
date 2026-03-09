@@ -9468,7 +9468,7 @@ local creator = __DIST.d()
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
-					Image = "rbxassetid://89151647333378",
+					Image = "rbxassetid://86693411280110",
 					Size = UDim2.fromScale(1, 1),
 
 					__dynamicKeys = {
