@@ -11215,6 +11215,34 @@ return {
 		},
 	},
 
+	NebulaX = {
+        _id = "NebulaX",
+        Dark = {
+            SwitchAccent = Color3.fromHex("#D942FF"),
+            Selection = Color3.fromHex("#6B11FF"),
+            SelectionFocused = Color3.fromHex("#8A2BE2"),
+            Toggle = { SwitchOn = Color3.fromHex("#D942FF") },
+            Button = {
+                FillPrimary = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(138, 43, 226)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(217, 66, 255)),
+                }),
+            },
+        },
+        Light = {
+            SwitchAccent = Color3.fromHex("#9C27B0"),
+            Selection = Color3.fromHex("#7B1FA2"),
+            SelectionFocused = Color3.fromHex("#8E24AA"),
+            Toggle = { SwitchOn = Color3.fromHex("#9C27B0") },
+            Button = {
+                FillPrimary = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(123, 31, 162)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(213, 0, 249)),
+                }),
+            },
+        },
+    }
+
 	Purple = {
 		_id = "Purple",
 		Dark = {
