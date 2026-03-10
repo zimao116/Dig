@@ -369,6 +369,7 @@ type KeybindField__DARKLUA_TYPE_V = BaseComponent__DARKLUA_TYPE_p & Components__
 type SliderProperties__DARKLUA_TYPE_W = ImageLabel__DARKLUA_TYPE_j & {
 	Minimum: number?,
 	Maximum: number?,
+	Step: number?,
 	Value: number?,
 	ValueChanged: ((self: Slider__DARKLUA_TYPE_X, value: number) -> unknown)?,
 }
@@ -7988,6 +7989,24 @@ local creator = __DIST.d()
 	--// References
 	local create = creator.Create
 
+	--// Functions
+	local function getPrecision(step)
+		local stepStr = tostring(step)
+		local dot = string.find(stepStr, "%.")
+		local precision = 0
+
+		if dot then
+			precision = #stepStr - dot
+		end
+
+		return precision
+	end
+
+	local function round(value, decimals)
+		local mult = 10 ^ (decimals or 0)
+		return math.floor(value * mult + 0.5) / mult
+	end
+
 	--// Variables
 	local parent = self.__container or self.__instance or self
 	local theme = self.Theme.Controls.Slider
@@ -7999,6 +8018,7 @@ local creator = __DIST.d()
 	properties.Value = properties.Value or 0
 	properties.Maximum = properties.Maximum or 1
 	properties.Minimum = properties.Minimum or 0
+	properties.Step = properties.Step or 0.1
 
 	structures.Body = binder.Apply(
 		properties,
@@ -8197,8 +8217,15 @@ local creator = __DIST.d()
 		local clampedCenterX = math.clamp(newCenterX, minX, maxX)
 
 		local alpha = (clampedCenterX - minX) / (maxX - minX)
+		local rawValue = object.Minimum + (object.Maximum - object.Minimum) * alpha
+
+		if object.Step and object.Step > 0 then
+			local snappedValue = math.round((rawValue - object.Minimum) / object.Step) * object.Step + object.Minimum
+			local precision = getPrecision(object.Step)
+			rawValue = round(snappedValue, precision)
+		end
 		
-		object.Value = object.Minimum + (object.Maximum - object.Minimum) * alpha
+		object.Value = math.clamp(rawValue, object.Minimum, object.Maximum)
 	end)
 
 	binder.Apply(properties, object)
