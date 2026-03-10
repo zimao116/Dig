@@ -11215,49 +11215,21 @@ return {
 		},
 	},
 
-	NebulaX = {
-        _id = "NebulaX",
-        Dark = {
-            SwitchAccent = Color3.fromHex("#D942FF"),
-            Selection = Color3.fromHex("#6B11FF"),
-            SelectionFocused = Color3.fromHex("#8A2BE2"),
-            Toggle = { SwitchOn = Color3.fromHex("#D942FF") },
-            Button = {
-                FillPrimary = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.fromRGB(138, 43, 226)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(217, 66, 255)),
-                }),
-            },
-        },
-        Light = {
-            SwitchAccent = Color3.fromHex("#9C27B0"),
-            Selection = Color3.fromHex("#7B1FA2"),
-            SelectionFocused = Color3.fromHex("#8E24AA"),
-            Toggle = { SwitchOn = Color3.fromHex("#9C27B0") },
-            Button = {
-                FillPrimary = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.fromRGB(123, 31, 162)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(213, 0, 249)),
-                }),
-            },
-        },
-    }
-
 	Purple = {
 		_id = "Purple",
 		Dark = {
-			SwitchAccent = Color3.fromHex("#BF5AF2"),
-			Selection = Color3.fromHex("#9B35D4"),
-			SelectionFocused = Color3.fromHex("#AE4FE0"),
-			Toggle = { SwitchOn = Color3.fromHex("#BF5AF2") },
-			Button = { FillPrimary = makeGradient("#AE4FE0", "#7A18B8") },
+			SwitchAccent = Color3.fromHex("#D942FF"),
+			Selection = Color3.fromHex("#6B11FF"),
+			SelectionFocused = Color3.fromHex("#8A2BE2"),
+			Toggle = { SwitchOn = Color3.fromHex("#D942FF") },
+			Button = { FillPrimary = makeGradient("#8A2BE2", "#D942FF") },
 		},
 		Light = {
-			SwitchAccent = Color3.fromHex("#AF52DE"),
-			Selection = Color3.fromHex("#8C2EC0"),
-			SelectionFocused = Color3.fromHex("#9E42CA"),
-			Toggle = { SwitchOn = Color3.fromHex("#AF52DE") },
-			Button = { FillPrimary = makeGradient("#9E42CA", "#7010A8") },
+			SwitchAccent = Color3.fromHex("#9C27B0"),
+			Selection = Color3.fromHex("#7B1FA2"),
+			SelectionFocused = Color3.fromHex("#8E24AA"),
+			Toggle = { SwitchOn = Color3.fromHex("#9C27B0") },
+			Button = { FillPrimary = makeGradient("#7B1FA2", "#D500F9") },
 		},
 	},
 
