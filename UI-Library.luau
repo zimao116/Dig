@@ -9582,6 +9582,7 @@ local creator = __DIST.d()
 
 			if expand then
 				structures.MenuContainer.Parent = structures.Body.__instance
+				resize()
 			end
 
 			anchor()
