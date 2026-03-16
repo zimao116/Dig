@@ -9315,34 +9315,6 @@ local creator = __DIST.d()
 				VerticalAlignment = Enum.VerticalAlignment.Center,
 			}),
 
-			create("ImageLabel")({
-				Name = "Checkmark",
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 1,
-				BorderColor3 = Color3.fromRGB(0, 0, 0),
-				BorderSizePixel = 0,
-				Image = "rbxassetid://127464789357538",
-				ImageColor3 = Color3.fromRGB(0, 0, 0),
-				ImageTransparency = 1,
-				Size = UDim2.fromOffset(16, 16),
-				Visible = false,
-
-				__dynamicKeys = {
-					ImageColor3 = self.Theme.Text.Primary[1],
-					ImageTransparency = self.Theme.Text.Primary[2],
-				},
-			}),
-
-			create("Frame")({
-				Name = "CheckmarkRepl",
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 1,
-				BorderColor3 = Color3.fromRGB(0, 0, 0),
-				BorderSizePixel = 0,
-				Size = UDim2.fromOffset(16, 16),
-				Visible = true,
-			}),
-
 			create("TextLabel")({
 				Name = "Label",
 				AutomaticSize = Enum.AutomaticSize.XY,
@@ -9371,7 +9343,6 @@ local creator = __DIST.d()
 			}),
 		}) :: TextButton
 		local label = option:FindFirstChild("Label")
-		local checkmark = option:FindFirstChild("Checkmark")
 
 		structures.Options[index] = option.__instance
 
@@ -9385,17 +9356,11 @@ local creator = __DIST.d()
 
 				label.TextColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
 				label.TextTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
-
-				checkmark.ImageColor3 = self.Theme.Controls.SelectionFocusedAccent[1].Value
-				checkmark.ImageTransparency = self.Theme.Controls.SelectionFocusedAccent[2].Value
 			else
 				option.BackgroundTransparency = 1
 
 				label.TextColor3 = self.Theme.Text.Primary[1].Value
 				label.TextTransparency = self.Theme.Text.Primary[2].Value
-
-				checkmark.ImageColor3 = self.Theme.Text.Primary[1].Value
-				checkmark.ImageTransparency = self.Theme.Text.Primary[2].Value
 			end
 		end)
 
@@ -9657,45 +9622,11 @@ local creator = __DIST.d()
 				else
 					structures.CurrentTab.Text = table.concat(labels, ", ")
 				end
-
-				for index, option in ipairs(structures.Options) do
-					if not option or not option:FindFirstChild("Checkmark") then
-						continue
-					end
-
-					if selMap[index] then
-						option:FindFirstChild("Checkmark").Visible = true
-						option:FindFirstChild("CheckmarkRepl").Visible = false
-					else
-						option:FindFirstChild("Checkmark").Visible = false
-						option:FindFirstChild("CheckmarkRepl").Visible = true
-					end
-				end
 			else
 				if not value or not structures.Options[value] then
 					structures.CurrentTab.Text = "None"
 				else
 					structures.CurrentTab.Text = structures.Options[value]:FindFirstChild("Label").Text
-				end
-
-				for index, option in ipairs(structures.Options) do
-					local currentIndex = index == value
-
-					if not option or not option:FindFirstChild("Checkmark") then
-						continue
-					end
-
-					if not currentIndex then
-						option:FindFirstChild("Checkmark").Visible = false
-						option:FindFirstChild("CheckmarkRepl").Visible = true -- Scuffed way to do this but 🤷‍♂️
-					else
-						option:FindFirstChild("CheckmarkRepl").Visible = false
-						if not value then
-							option:FindFirstChild("Checkmark").Visible = false
-						else
-							option:FindFirstChild("Checkmark").Visible = true
-						end
-					end
 				end
 			end
 
