@@ -9562,6 +9562,11 @@ local creator = __DIST.d()
 					BackgroundTransparency = theme.MenuBackground[2],
 				},
 
+				create("UISizeConstraint")({
+			        Name = "UISizeConstraint",
+			        MinSize = Vector2.new(200, 0),
+			    }),
+
 				create("UICorner")({
 					Name = "UICorner",
 					CornerRadius = UDim.new(0, 6),
