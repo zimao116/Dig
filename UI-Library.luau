@@ -9222,20 +9222,17 @@ local creator = __DIST.d()
 	local EDGE_BUFFER = 6
 
 	local SIZE_CONSTRAINT_Y = 239
+	local MENU_WIDTH = 200
 
 	--// Functions
 	local function resize()
-		structures.Menu.AutomaticSize = Enum.AutomaticSize.XY
-
 		task.defer(function()
 			local menuHeight = structures.Menu.AbsoluteSize.Y
 
 			if menuHeight >= SIZE_CONSTRAINT_Y then
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
-				structures.Menu.Size = UDim2.fromOffset(0, SIZE_CONSTRAINT_Y)
+				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, SIZE_CONSTRAINT_Y)
 			else
-				structures.Menu.Size = UDim2.fromOffset(0, menuHeight)
-				structures.Menu.AutomaticSize = Enum.AutomaticSize.X
+				structures.Menu.Size = UDim2.fromOffset(MENU_WIDTH, menuHeight)
 			end
 		end)
 	end
@@ -9261,8 +9258,14 @@ local creator = __DIST.d()
 		else
 			desiredX = bodyPos.X + HORIZONTAL_OFFSET
 		end
-		
-		local desiredY = bodyPos.Y + (bodySize.Y * 3) + (VERTICAL_PADDING * 3)
+
+		local desiredY = bodyPos.Y + bodySize.Y + VERTICAL_PADDING
+
+		-- flip ขึ้นบนถ้าพื้นที่ล่างไม่พอ
+		if desiredY + menuSize.Y > viewportSize.Y - EDGE_BUFFER then
+			desiredY = bodyPos.Y - menuSize.Y - VERTICAL_PADDING
+		end
+
 		local maxX = math.max(EDGE_BUFFER, viewportSize.X - EDGE_BUFFER - menuSize.X)
 		local maxY = math.max(EDGE_BUFFER, viewportSize.Y - EDGE_BUFFER - menuSize.Y)
 
@@ -9278,7 +9281,7 @@ local creator = __DIST.d()
 			Name = "Item",
 			Size = UDim2.fromScale(1, 0),
 			AutoButtonColor = false,
-			AutomaticSize = Enum.AutomaticSize.XY,
+			AutomaticSize = Enum.AutomaticSize.Y,
 			BorderColor3 = Color3.fromRGB(0, 0, 0),
 			BorderSizePixel = 0,
 			Selectable = false,
@@ -9317,7 +9320,8 @@ local creator = __DIST.d()
 
 			create("TextLabel")({
 				Name = "Label",
-				AutomaticSize = Enum.AutomaticSize.XY,
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Size = UDim2.fromScale(1, 0),
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 				BackgroundTransparency = 1,
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
@@ -9330,6 +9334,7 @@ local creator = __DIST.d()
 				TextSize = 15,
 				TextTransparency = 0.15,
 				TextTruncate = Enum.TextTruncate.AtEnd,
+				TextXAlignment = Enum.TextXAlignment.Left,
 
 				__dynamicKeys = {
 					TextColor3 = self.Theme.Text.Primary[1],
@@ -9460,7 +9465,7 @@ local creator = __DIST.d()
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
-					Image = "rbxassetid://86693411280110",
+					Image = "rbxassetid://89151647333378",
 					Size = UDim2.fromScale(1, 1),
 
 					__dynamicKeys = {
@@ -9479,7 +9484,7 @@ local creator = __DIST.d()
 				BorderSizePixel = 0,
 				FontFace = Font.new("rbxassetid://12187365364"),
 				RichText = true,
-				Text = "",
+				Text = "None",
 				TextSize = 15,
 				TextTransparency = 0.15,
 				TextTruncate = Enum.TextTruncate.AtEnd,
@@ -9513,7 +9518,8 @@ local creator = __DIST.d()
 
 			create("ScrollingFrame")({
 				Name = "PopUpMenu",
-				AutomaticSize = Enum.AutomaticSize.X,
+				AutomaticSize = Enum.AutomaticSize.None,
+				Size = UDim2.fromOffset(MENU_WIDTH, 0),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BorderSizePixel = 0,
 				AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -9526,11 +9532,6 @@ local creator = __DIST.d()
 					BackgroundColor3 = theme.MenuBackground[1],
 					BackgroundTransparency = theme.MenuBackground[2],
 				},
-
-				create("UISizeConstraint")({
-			        Name = "UISizeConstraint",
-			        MinSize = Vector2.new(200, 0),
-			    }),
 
 				create("UICorner")({
 					Name = "UICorner",
@@ -9618,7 +9619,7 @@ local creator = __DIST.d()
 				end
 
 				if #labels == 0 then
-					structures.CurrentTab.Text = ""
+					structures.CurrentTab.Text = "None"
 				else
 					structures.CurrentTab.Text = table.concat(labels, ", ")
 				end
